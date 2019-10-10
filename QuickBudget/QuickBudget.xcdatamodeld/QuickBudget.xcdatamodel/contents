@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14903" systemVersion="19A573a" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CDAccount" representedClassName=".CDAccount" syncable="YES">
+        <attribute name="accountId" attributeType="String" defaultValueString="0"/>
+        <attribute name="mask" attributeType="String" defaultValueString="x0000"/>
+        <attribute name="name" attributeType="String" defaultValueString="name"/>
+        <attribute name="subtype" optional="YES" attributeType="String"/>
+        <attribute name="type" attributeType="String" defaultValueString="credit"/>
+        <relationship name="balances" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDAccountBalances" inverseName="account" inverseEntity="CDAccountBalances"/>
+        <relationship name="bank" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDBank" inverseName="accounts" inverseEntity="CDBank"/>
+        <relationship name="bills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDRecurringBill" inverseName="account" inverseEntity="CDRecurringBill"/>
+        <relationship name="incomes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDIncome" inverseName="account" inverseEntity="CDIncome"/>
+        <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDTransaction" inverseName="account" inverseEntity="CDTransaction"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDUser" inverseName="accounts" inverseEntity="CDUser"/>
+    </entity>
+    <entity name="CDAccountBalances" representedClassName=".CDAccountBalances" syncable="YES">
+        <attribute name="available" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="currencyCode" optional="YES" attributeType="String"/>
+        <attribute name="current" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="limit" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDAccount" inverseName="balances" inverseEntity="CDAccount"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="balances" inverseEntity="CDUser"/>
+    </entity>
+    <entity name="CDBank" representedClassName=".CDBank" syncable="YES">
+        <attribute name="bankId" attributeType="String" defaultValueString="0"/>
+        <attribute name="isProvisioned" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="logo" optional="YES" attributeType="String"/>
+        <attribute name="name" attributeType="String" defaultValueString="bank"/>
+        <attribute name="primaryColor" optional="YES" attributeType="String"/>
+        <attribute name="token" optional="YES" attributeType="String"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDAccount" inverseName="bank" inverseEntity="CDAccount"/>
+    </entity>
+    <entity name="CDIncome" representedClassName=".CDIncome" syncable="YES">
+        <attribute name="amount" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="interval" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String" defaultValueString="salary"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDAccount" inverseName="incomes" inverseEntity="CDAccount"/>
+    </entity>
+    <entity name="CDRecurringBill" representedClassName=".CDRecurringBill" syncable="YES">
+        <attribute name="amount" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="interval" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String" defaultValueString="bill"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDAccount" inverseName="bills" inverseEntity="CDAccount"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDUser" inverseName="bills" inverseEntity="CDUser"/>
+    </entity>
+    <entity name="CDTransaction" representedClassName=".CDTransaction" syncable="YES">
+        <attribute name="amount" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="currencyCode" optional="YES" attributeType="String"/>
+        <attribute name="date" attributeType="Date" defaultDateTimeInterval="589930140" usesScalarValueType="NO"/>
+        <attribute name="isPending" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="location" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDAccount" inverseName="transactions" inverseEntity="CDAccount"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDUser" inverseName="transactions" inverseEntity="CDUser"/>
+    </entity>
+    <entity name="CDUser" representedClassName=".CDUser" syncable="YES">
+        <attribute name="name" attributeType="String" defaultValueString="user"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDAccount" inverseName="users" inverseEntity="CDAccount"/>
+        <relationship name="balances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDAccountBalances" inverseName="user" inverseEntity="CDAccountBalances"/>
+        <relationship name="bills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDRecurringBill" inverseName="users" inverseEntity="CDRecurringBill"/>
+        <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDTransaction" inverseName="users" inverseEntity="CDTransaction"/>
+    </entity>
+    <elements>
+        <element name="CDAccount" positionX="-1739.22265625" positionY="-3280.04296875" width="128" height="208"/>
+        <element name="CDAccountBalances" positionX="-1737.37109375" positionY="-3500.94921875" width="128" height="133"/>
+        <element name="CDBank" positionX="-1989.08203125" positionY="-3265.08984375" width="128" height="148"/>
+        <element name="CDIncome" positionX="-1446.9765625" positionY="-3220.7265625" width="128" height="118"/>
+        <element name="CDRecurringBill" positionX="-1964.4375" positionY="-3008.42578125" width="128" height="133"/>
+        <element name="CDTransaction" positionX="-1519.28125" positionY="-3042.109375" width="128" height="178"/>
+        <element name="CDUser" positionX="-1759.08984375" positionY="-2965.96484375" width="128" height="118"/>
+    </elements>
+</model>
